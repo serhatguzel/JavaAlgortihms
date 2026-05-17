@@ -133,7 +133,23 @@ public int[] twoSum2(int[] nums, int target) {
     return new int[]{};
 }
 ```
-
+```java
+public int subarraySum(int[] nums, int k) {
+        int sum = 0, result = 0;
+        Map<Integer, Integer> preSum = new HashMap<>();
+        preSum.put(0, 1);
+        
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+            if (preSum.containsKey(sum - k)) {
+                result += preSum.get(sum - k);
+            }
+            preSum.put(sum, preSum.getOrDefault(sum, 0) + 1);
+        }
+        
+        return result;
+    }
+```
 ### 5. Merge Intervals (Aralıkları Birleştirme)
 Zaman aralıklarından (veya sayı aralıklarından) oluşan bir listede birbiriyle çakışan (overlapping) aralıkları birleştirmenizi ister. Örneğin: `[[1,3], [2,6], [8,10]]` dizisinde `[1,3]` ve `[2,6]` çakışır çünkü 2 sayısı 1 ile 3 arasındadır. Bunları birleştirip `[1,6]` yaparız.
 
