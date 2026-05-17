@@ -419,22 +419,48 @@ return new StringBuilder(str).reverse().toString();
 
 ```java
 public static String QuestionsMarks(String str) {
-    str = str.replaceAll("[a-z]", "");
-    Pattern pattern = Pattern.compile("([0-9])([?])([?])([?])([0-9])");
-    Pattern falseP1 = Pattern.compile("([0-9])([?])([?])([0-9])");
-    Pattern falseP2 = Pattern.compile("([0-9])([?])([0-9])");
-    Matcher falseMatchP1 = falseP1.matcher(str);
-    Matcher falseMatchP2 = falseP2.matcher(str);
-    Matcher matchPattern = pattern.matcher(str);
-    
-    if (falseMatchP1.find() || falseMatchP2.find()){
-        return "false";
+        // En az bir tane toplamı 10 eden çift bulup bulmadığımızı takip ederiz.
+        boolean foundTenPair = false;
+        
+        // Bir önceki bulduğumuz rakamı ve indeksini saklarız.
+        int lastNum = -1;
+        int qCount = 0;
+
+        for (int i = 0; i < str.length(); i++) {
+            char ch = str.charAt(i);
+
+            if (Character.isDigit(ch)) {
+                int currentNum = Character.getNumericValue(ch);
+
+                // Eğer daha önce bir rakam gördüysek, toplamı kontrol et.
+                if (lastNum != -1) {
+                    if (lastNum + currentNum == 10) {
+                        // KURAL: Toplam 10 ise, aradaki soru işareti TAM 3 olmalı.
+                        if (qCount != 3) {
+                            return "false";
+                        }
+                        foundTenPair = true;
+                    }
+                }
+                
+                // Yeni bir rakam bulduğumuz için:
+                // Mevcut rakamı 'son rakam' yap ve soru işareti sayacını sıfırla.
+                lastNum = currentNum;
+                qCount = 0;
+
+            } else if (ch == '?') {
+                // Sadece iki rakam arasındayken soru işaretlerini sayarız.
+                // lastNum -1 değilse, bir rakam görmüşüz demektir.
+                if (lastNum != -1) {
+                    qCount++;
+                }
+            }
+        }
+
+        // Eğer döngü bittiyse ve kurallara aykırı bir durum çıkmadıysa;
+        // en az bir tane toplamı 10 eden çift bulup bulmadığımıza göre sonuç döner.
+        return foundTenPair ? "true" : "false";
     }
-    if (matchPattern.find()){
-        return "true";
-    }
-    return "false";
-}
 ```
 
 ### 16. Find Intersection
