@@ -29,8 +29,10 @@ Bu dosya, sık karşılaşılan algoritma problemlerinin, veri yapıları operas
   - [Tree Constructor](#20-tree-constructor)
   - [Bracket Match](#21-bracket-match)
   - [Bracket Combinations (Catalan Sayıları)](#22-bracket-combinations-catalan-sayıları)
+- [Matrisler ve Graf Algoritmaları (Matrices & Graphs)](#matrisler-ve-graf-algoritmaları-matrices--graphs)
+  - [Matrix Areas (Number of Islands)](#23-matrix-areas-number-of-islands)
 - [React](#react)
-  - [React Toggle Component](#23-react-toggle-component)
+  - [React Toggle Component](#24-react-toggle-component)
 
 ---
 
@@ -613,9 +615,59 @@ public static int BracketCombinations(int n) {
 
 ---
 
+## Matrisler ve Graf Algoritmaları (Matrices & Graphs)
+
+### 23. Matrix Areas (Number of Islands)
+Size sadece "1" (duvar) ve "0" (boş alan/delik) karakterlerinden oluşan 2 boyutlu bir matris veriliyor. Yatay veya dikey olarak birbirine komşu olan "0" değerlerinin oluşturduğu toplam bağımsız boşluk alanlarının sayısını bulan algoritma (DFS kullanarak).
+
+```java
+import java.util.*;
+
+class Main {
+    public static int MatrixAreas(String[] strArr) {
+        int rows = strArr.length;
+        int cols = strArr[0].length();
+        char[][] grid = new char[rows][cols];
+        
+        for (int i = 0; i < rows; i++) {
+            grid[i] = strArr[i].toCharArray();
+        }
+
+        int areaCount = 0;
+
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                if (grid[r][c] == '0') {
+                    areaCount++;
+                    dfs(grid, r, c); // Bağlı tüm '0'ları temizle
+                }
+            }
+        }
+        return areaCount;
+    }
+
+    private static void dfs(char[][] grid, int r, int c) {
+        // Sınır ve '0' kontrolü
+        if (r < 0 || r >= grid.length || c < 0 || c >= grid[0].length || grid[r][c] != '0') {
+            return;
+        }
+        
+        grid[r][c] = '1'; // Ziyaret edildi olarak işaretle
+
+        // 4 yöne derinlemesine git
+        dfs(grid, r + 1, c); // Aşağı
+        dfs(grid, r - 1, c); // Yukarı
+        dfs(grid, r, c + 1); // Sağ
+        dfs(grid, r, c - 1); // Sol
+    }
+}
+```
+
+---
+
 ## React
 
-### 23. React Toggle Component
+### 24. React Toggle Component
 React'te state yönetimi ile basit bir aç-kapa (toggle) butonu örneği.
 
 ```tsx
